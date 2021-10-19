@@ -146,10 +146,11 @@ else:
 #original epoch is 25
 for itrca in range(3):
     itrca=itrca+1
-    federatedmodel=model()
+    localmodel=model()
     
-    main_model_bias=federatedmodel.getbias(bca)
-    main_model_weights=federatedmodel.getweight(wca)
+    
+    main_model_bias=localmodel.getbias(bca)
+    main_model_weights=localmodel.getweight(wca)
     
     if(len(wca)!=0):
         print("training locally")
@@ -165,11 +166,12 @@ for itrca in range(3):
         print("taking average of the nodes and sending nodes to main model")
 
     #local data training
-    wca,bca=federatedmodel.SGDModel(train_data, 0.001,itrca*default,1000,1,x_test,-2,-2)
-    y1ca_pred_train=federatedmodel.predict(x_test,wca,bca)
+    wca,bca=localmodel.SGDModel(train_data, 0.001,itrca*default,1000,1,x_test,-2,-2)
+    y1ca_pred_train=localmodel.predict(x_test,wca,bca)
     
     
     #federated
+    federatedmodel=model()
     newweight=federatedmodel.getweight(wca)
     newbias=federatedmodel.getbias(bca)
 
