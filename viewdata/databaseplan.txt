@@ -1,0 +1,50 @@
+Node 1 : 
+
+Database 1 - pickle file
+
+MySQL Database 1 : node1database:
+	Table node1:
+		- uniqueID, nodename,username, pass
+	Table node1predictions:
+		- array of errors, 2D array of predictions, graph.png
+
+- when node 1 starts after login , user see dashboard (still need to figure out)
+- when click run button 
+	- insert into admin database : nodename, node uniqueID
+	- as it captures errors - insert error into node1predictions
+	- finally insert 2D array of predicitons into node1predictions
+	- insert graph into node1predictions
+	- remove node1 from admin managenode table
+
+
+
+Node 2 : 
+
+Database 1 - pickle file
+
+MySQL Database 1 : node2database:
+	Table node2:
+		- uniqueID, nodename,username, pass
+	Table node2predictions:
+		- array of errors, 2D array of predictions, graph.png
+
+- when node 2 starts after login , user see dashboard (still need to figure out)
+- when click run button 
+	- insert into admin database : nodename, node uniqueID
+	- as it captures errors - insert error into node2predictions
+	- finally insert 2D array of predicitons into node2predictions
+	- insert graph into node1predictions
+	- remove node 2 from admin managenode table
+
+
+
+Application Database (Admin):
+
+MySQLDatabase 1: app dataset
+	Table managenodes:
+		- nodename, nodeuniqueid
+		- check which node running. 
+	Table adminuser:
+		- adminusername, adminpass
+
+
