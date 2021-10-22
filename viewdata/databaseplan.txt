@@ -20,6 +20,8 @@ MySQL Database 1 : node1database:
 	- finally insert 2D array of predicitons into node1predictions
 	- insert graph into node1predictions
 	- remove node1 from admin managenode table
+	- add node 1 to history table admin database
+
 
 
 
@@ -45,6 +47,7 @@ MySQL Database 1 : node2database:
 	- finally insert 2D array of predicitons into node2predictions
 	- insert graph into node1predictions
 	- remove node 2 from admin managenode table
+	- add node 2 to history table admin database
 
 
 
@@ -56,5 +59,7 @@ MySQLDatabase 1: app dataset
 		- check which node running. 
 	Table adminuser:
 		- adminusername, adminpass
+	--history table
+		- node name, nodeuniqueid, timetaken
 
 
