@@ -8,7 +8,12 @@ MySQL Database 1 : node1database:
 	Table node1predictions:
 		- array of errors, 2D array of predictions, graph.png
 
-- when node 1 starts after login , user see dashboard (still need to figure out)
+- when node 1 starts after login , user see dashboard (options like view results etc..)
+- a form with following input:
+	- predictions on covid patients
+	- predictions on all patients
+	- predictions on all hospital beds [ right now this is implemented]
+	- predicions on icu beds
 - when click run button 
 	- insert into admin database : nodename, node uniqueID
 	- as it captures errors - insert error into node1predictions
@@ -28,7 +33,12 @@ MySQL Database 1 : node2database:
 	Table node2predictions:
 		- array of errors, 2D array of predictions, graph.png
 
-- when node 2 starts after login , user see dashboard (still need to figure out)
+- when node 2 starts after login , user see dashboard (options like view results etc..)
+- a form with following input:
+	- predictions on covid patients
+	- predictions on all patients
+	- predictions on all hospital beds [ right now this is implemented]
+	- predicions on icu beds
 - when click run button 
 	- insert into admin database : nodename, node uniqueID
 	- as it captures errors - insert error into node2predictions
