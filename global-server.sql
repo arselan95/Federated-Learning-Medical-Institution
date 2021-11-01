@@ -1,0 +1,28 @@
+CREATE TABLE `globalserver` (
+  `nodename` varchar(255) DEFAULT NULL,
+  `nodeid` int(11) DEFAULT NULL,
+  `starttime` datetime DEFAULT NULL,
+  `totaltime` varchar(255) DEFAULT NULL,
+  `jobstatus` varchar(255) DEFAULT NULL,
+  `jobid` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `globalserver`
+--
+
+LOCK TABLES `globalserver` WRITE;
+/*!40000 ALTER TABLE `globalserver` DISABLE KEYS */;
+INSERT INTO `globalserver` VALUES ('node2',1,'2021-11-02 16:59:22','24.259893894195557','completed','130219d569a34e76adb558026145353c'),('node2',1,'2021-11-02 17:00:11','49.96400594711304','completed','29480184abdc49d2b11b8ed5c7f707fd');
+/*!40000 ALTER TABLE `globalserver` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
