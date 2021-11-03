@@ -156,10 +156,32 @@ scaler = preprocessing.StandardScaler().fit(x_train)
 x_train = scaler.transform(x_train)
 x_test=scaler.transform(x_test)
 
-## Adding the BED Column in the data
-train_data=pd.DataFrame(x_train)
-train_data['beds']=y_train
-train_data.head(3)
+
+## Adding the prediction type Column in the data as requested by user
+if predictiontype=='beds':
+    train_data=pd.DataFrame(x_train)
+    train_data['beds']=y_train
+    train_data.head(3)
+
+if predictiontype=='icubeds':
+    train_data=pd.DataFrame(x_train)
+    train_data['icubeds']=y_train
+    train_data.head(3)
+
+if predictiontype=='covidpatients':
+    train_data=pd.DataFrame(x_train)
+    train_data['covidpatients']=y_train
+    train_data.head(3)
+
+if predictiontype=='icupatients':
+    train_data=pd.DataFrame(x_train)
+    train_data['icupatients']=y_train
+    train_data.head(3)
+
+if predictiontype=='suspectedcovid':
+    train_data=pd.DataFrame(x_train)
+    train_data['suspectedcovid']=y_train
+    train_data.head(3)
 
 x_test=np.array(x_test)
 y_test=np.array(y_test)
