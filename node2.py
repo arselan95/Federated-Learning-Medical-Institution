@@ -1,25 +1,42 @@
 import warnings
 warnings.filterwarnings("ignore")
-from sklearn.datasets import load_boston
-from sklearn import preprocessing
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
-from sklearn.linear_model import SGDRegressor
-from sklearn import preprocessing
-from sklearn.metrics import mean_squared_error
 from numpy import random
-from sklearn.model_selection import train_test_split
 import pickle
 from matplotlib.pyplot import figure
 import math
 from globalmodel import model
 import csv
+import pymysql
+from sklearn import preprocessing
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+import time
+import json
+import uuid
+
+conn=None
+#check node2 database to get type of predictions entered by user
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='node2')
+
+cursor=None
+cursor=conn.cursor()
+sql1='select predictiontype from node2info where node2id=1;'
+cursor.execute(sql1)
+row=cursor.fetchone()
+predictiontype=row[0]
+print("testing dataabse")
+print(predictiontype)
 
 finalrecord=[]
 finaltrecord=[]
-
 
 '''
 with open('calidata.csv', 'r') as infile, open('updatecalidata.csv', 'w',newline='') as outfile:
@@ -41,36 +58,89 @@ print(len(x.columns))
 print(x.count)
 
 x = x[x['hospitalized_covid_confirmed_patients'] > 0 ]
-
 x = x[x['hospitalized_suspected_covid_patients'] > 0]
-
 x = x[x['hospitalized_covid_patients'] > 0 ]
-
 x = x[x['all_hospital_beds'] > 0]
-
 x = x[x['icu_covid_confirmed_patients'] > 0 ]
-
 x = x[x['icu_suspected_covid_patients'] > 0 ]
-
 x = x[x['icu_available_beds'] > 0  ]
 
 
 x=x.reset_index()
 print(x.count)
 
+
+#based on the type of user input retrived from database we do predictions
 i=0
-for i in range(2000):
-	zrecord=[]
-	zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
-	zrecord.append(x['hospitalized_suspected_covid_patients'][i])
-	zrecord.append(x['hospitalized_covid_patients'][i])
-	zrecord.append(x['all_hospital_beds'][i])
-	zrecord.append(x['icu_covid_confirmed_patients'][i])
-	zrecord.append(x['icu_suspected_covid_patients'][i])
-	zrecord.append(x['icu_available_beds'][i])
-	zrecord = np.asarray(zrecord)
-	finalrecord.append(zrecord)
-	finaltrecord.append(x['all_hospital_beds'][i])
+if predictiontype=='beds':
+    for i in range(2000):
+    	zrecord=[]
+    	zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+    	zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+    	zrecord.append(x['hospitalized_covid_patients'][i])
+    	zrecord.append(x['all_hospital_beds'][i])
+    	zrecord.append(x['icu_covid_confirmed_patients'][i])
+    	zrecord.append(x['icu_suspected_covid_patients'][i])
+    	zrecord.append(x['icu_available_beds'][i])
+    	zrecord = np.asarray(zrecord)
+    	finalrecord.append(zrecord)
+    	finaltrecord.append(x['all_hospital_beds'][i])
+
+if predictiontype=='icubeds':
+    for i in range(2000):
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['icu_available_beds'][i])
+
+if predictiontype=='covidpatients':
+    for i in range(2000):
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['hospitalized_covid_patients'][i])
+
+if predictiontype=='icupatients':
+    for i in range(2000):
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['icu_covid_confirmed_patients'][i])
+
+if predictiontype=='suspectedcovid':
+    for i in range(2000):
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['hospitalized_suspected_covid_patients'][i])
 
 
 finaltrecord=np.asarray(finaltrecord)
@@ -121,6 +191,14 @@ plt.legend(prop={'size': 16})
 #plt.show()
 '''
 
+#global model database for admin
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='globalnode')
+cursor=None
+
 wca=[]
 bca=[]
 
@@ -129,20 +207,36 @@ print("FEDERATED")
 print(train_data.shape)
 default=800
 
-'''
-#for demo update list model node
+#timer
+node2starttime=time.time()
+#jobid
+jobid=uuid.uuid4()
+
+#MysqlDatabase
+cursor=conn.cursor()
+sql='Insert into managenodes(nodename, nodeid, starttime, jobstatus,jobid) values (%s,1,now(),%s,%s);'
+sqlinsert=("node2","running",jobid.hex)
+cursor.execute(sql,sqlinsert)
+conn.commit()
+cursor.close()
+
+
+
+#for demo update list model node (IGNORE THIS)
 dfile=pd.read_csv("demodatabase.csv")
 print("ok")
 print(dfile.index)
 if len(dfile.index) !=0:
-    dic=[[1,'captured node 1'],[2,'captured node 2']]
+    dic=[[3,'captured node 3'],[2,'captured node 2']]
     ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
     ddic.to_csv('demodatabase.csv')
 else:
     dic=[[2,'captured node 2']]
     ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
     ddic.to_csv('demodatabase.csv')
-'''
+#########################################################
+
+errors=[]
 #original epoch is 25
 for itrca in range(3):
     itrca=itrca+1
@@ -202,6 +296,8 @@ for itrca in range(3):
     if(itrca<=1):
         print("data loss captured by updated weights sent by Global model")
         print((mean_squared_error(y_test,y1ca_pred_train))/10)
+        loss=mean_squared_error(y_test,y1ca_pred_train)/10
+        errors.append(loss)
 
 
     if(len(avgweight)!=0):
@@ -210,10 +306,14 @@ for itrca in range(3):
         print("sending updated model back to the node")
         print("data loss captured by updated weights sent by Global model")
         print((mean_squared_error(y_test,y2ca_pred_train))/10)
+        loss=mean_squared_error(y_test,y1ca_pred_train)/10
+        errors.append(loss)
 
 print()
 print()
 print("predict")
+xdict={'xvalues':list(y_test)}
+ydict={'yvalues':list(y2ca_pred_train)}
 print(y_test)
 print(len(y_test))
 print(y2ca_pred_train)
@@ -225,5 +325,66 @@ plt.plot(y2ca_pred_train, label='Predicted')
 plt.legend(prop={'size': 16})
 plt.savefig('node2predictions.png')
 print("################")
+
+totaltime=time.time()-node2starttime
+totaltime=str(totaltime)
+
+#mysql update global model for admin
+cursor=conn.cursor()
+sql2='update managenodes set totaltime=%s, jobstatus=%s where jobid=%s;'
+sql2where=(totaltime,"completed",jobid.hex)
+cursor.execute(sql2,sql2where)
+conn.commit()
+cursor.close()
+conn.close()
+
+print(len(json.dumps(xdict)))
+conn=None
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='node2')
+cursor=None
+#mysql update node 2 with current latest predictions
+cursor=conn.cursor()
+sql2='update node2info set xpredvalues=%s, ypredvalues=%s where node2id=1'
+sql2where=(json.dumps(xdict), json.dumps(ydict))
+cursor.execute(sql2,sql2where)
+conn.commit()
+cursor.close()
+
+
+#mysql update node 2 prediction history
+cursor=None
+cursor=conn.cursor()
+sql3='Insert into node2predictions(xpredvalues,ypredvalues, predictiontype) values (%s,%s,%s);'
+sql3insert=(json.dumps(xdict), json.dumps(ydict),"beds")
+cursor.execute(sql3,sql3insert)
+conn.commit()
+cursor.close()
+conn.close()
+
+
+
+#IGNORE THIS
+testlist1=[[3,'captured node 3']]
+testlist=[]
+dfile=pd.read_csv("demodatabase.csv")
+if dfile.empty is False:
+    for l in range(len(dfile.index)):
+        event=dfile['event'][l]
+        if(event != 'captured node 2'):
+            tempdic=[l,event]
+            testlist.append(tempdic)
+
+    if len(testlist) !=0:
+        ddic=pd.DataFrame(testlist1,columns=['nodenumber','event'])
+        ddic.to_csv('demodatabase.csv')
+    if(len(testlist) ==0):
+        ddic=pd.DataFrame(columns=['nodenumber','event'])
+        ddic.to_csv('demodatabase.csv')
+
+   
 
 
