@@ -1,21 +1,43 @@
 import warnings
 warnings.filterwarnings("ignore")
-from sklearn.datasets import load_boston
-from sklearn import preprocessing
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
-from sklearn.linear_model import SGDRegressor
-from sklearn import preprocessing
-from sklearn.metrics import mean_squared_error
 from numpy import random
-from sklearn.model_selection import train_test_split
 import pickle
 from matplotlib.pyplot import figure
 import math
 from globalmodel import model
 import csv
+import pymysql
+from sklearn import preprocessing
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+import time
+import json
+import uuid
+
+
+#check node3 database to get type of predictions entered by user
+conn=None
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='node3')
+
+cursor=None
+cursor=conn.cursor()
+sql1='select predictiontype from node3info where node3id=2;'
+cursor.execute(sql1)
+row=cursor.fetchone()
+predictiontype=row[0]
+cursor.close()
+conn.close()
+
+print("testing dataabse")
+print(predictiontype)
 
 finalrecord=[]
 finaltrecord=[]
@@ -119,6 +141,15 @@ plt.plot(y1_pred_train, label='Predicted')
 plt.legend(prop={'size': 16})
 #plt.show()
 '''
+
+#global model database for admin
+conn=None
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='globalnode')
+cursor=None
 wca=[]
 bca=[]
 
@@ -127,20 +158,20 @@ print("FEDERATED")
 print(train_data.shape)
 default=800
 
-'''
-#for demo update list model node
-dfile=pd.read_csv("demodatabase.csv")
-print("ok")
-print(dfile.index)
-if len(dfile.index) !=0:
-    dic=[[1,'captured node 1'],[2,'captured node 2']]
-    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
-    ddic.to_csv('demodatabase.csv')
-else:
-    dic=[[2,'captured node 2']]
-    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
-    ddic.to_csv('demodatabase.csv')
-'''
+#timer
+node3starttime=time.time()
+#jobid
+jobid=uuid.uuid4()
+
+#MysqlDatabase
+cursor=conn.cursor()
+sql='Insert into managenodes(nodename, nodeid, starttime, jobstatus,jobid) values (%s,2,now(),%s,%s);'
+sqlinsert=("node3","running",jobid.hex)
+cursor.execute(sql,sqlinsert)
+conn.commit()
+cursor.close()
+
+errors=[]
 #original epoch is 25
 for itrca in range(3):
     itrca=itrca+1
@@ -200,6 +231,8 @@ for itrca in range(3):
     if(itrca<=1):
         print("data loss captured by updated weights sent by Global model")
         print((mean_squared_error(y_test,y1ca_pred_train))/10)
+        loss=mean_squared_error(y_test,y1ca_pred_train)/10
+        errors.append(loss)
 
 
     if(len(avgweight)!=0):
@@ -208,10 +241,15 @@ for itrca in range(3):
         print("sending updated model back to the node")
         print("data loss captured by updated weights sent by Global model")
         print((mean_squared_error(y_test,y2ca_pred_train))/10)
+        loss=mean_squared_error(y_test,y2ca_pred_train)/10
+        errors.append(loss)
 
 print()
 print()
 print("predict")
+xdict={'xvalues':list(y_test)}
+ydict={'yvalues':list(y2ca_pred_train)}
+errlist={'loss':list(errors)}
 print(y_test)
 print(len(y_test))
 print(y2ca_pred_train)
@@ -221,7 +259,45 @@ plt.figure(figsize=(25,6))
 plt.plot(y_test, label='Actual')
 plt.plot(y2ca_pred_train, label='Predicted')
 plt.legend(prop={'size': 16})
-plt.savefig('node1predictions.png')
+plt.savefig('node3predictions.png')
 print("################")
+
+totaltime=time.time()-node3starttime
+totaltime=str(totaltime)
+
+#mysql update global model for admin
+cursor=conn.cursor()
+sql2='update managenodes set totaltime=%s, jobstatus=%s where jobid=%s;'
+sql2where=(totaltime,"completed",jobid.hex)
+cursor.execute(sql2,sql2where)
+conn.commit()
+cursor.close()
+conn.close()
+
+#mysql update node 3 with current latest predictions
+conn=None
+conn=pymysql.connect(
+    host='localhost',
+    user='root',
+    password='',
+    db='node3')
+cursor=None
+cursor=conn.cursor()
+sql3='update node3info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node3id=2'
+sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
+cursor.execute(sql3,sql3where)
+conn.commit()
+cursor.close()
+
+
+#mysql update node 3 prediction history
+cursor=None
+cursor=conn.cursor()
+sql4='Insert into node3predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
+sql4insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
+cursor.execute(sql4,sql4insert)
+conn.commit()
+cursor.close()
+conn.close()
 
 
