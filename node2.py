@@ -222,19 +222,6 @@ cursor.close()
 
 
 
-#for demo update list model node (IGNORE THIS)
-dfile=pd.read_csv("demodatabase.csv")
-print("ok")
-print(dfile.index)
-if len(dfile.index) !=0:
-    dic=[[3,'captured node 3'],[2,'captured node 2']]
-    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
-    ddic.to_csv('demodatabase.csv')
-else:
-    dic=[[2,'captured node 2']]
-    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
-    ddic.to_csv('demodatabase.csv')
-#########################################################
 
 errors=[]
 #original epoch is 25
@@ -367,24 +354,6 @@ cursor.close()
 conn.close()
 
 
-
-#IGNORE THIS
-testlist1=[[3,'captured node 3']]
-testlist=[]
-dfile=pd.read_csv("demodatabase.csv")
-if dfile.empty is False:
-    for l in range(len(dfile.index)):
-        event=dfile['event'][l]
-        if(event != 'captured node 2'):
-            tempdic=[l,event]
-            testlist.append(tempdic)
-
-    if len(testlist) !=0:
-        ddic=pd.DataFrame(testlist1,columns=['nodenumber','event'])
-        ddic.to_csv('demodatabase.csv')
-    if(len(testlist) ==0):
-        ddic=pd.DataFrame(columns=['nodenumber','event'])
-        ddic.to_csv('demodatabase.csv')
 
    
 
