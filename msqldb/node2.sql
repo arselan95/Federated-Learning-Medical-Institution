@@ -30,6 +30,7 @@ CREATE TABLE `node2info` (
   `xpredvalues` text DEFAULT NULL,
   `ypredvalues` text DEFAULT NULL,
   `predictiontype` varchar(100) DEFAULT NULL,
+  `dataloss` varchar(700) DEFAULT NULL,
   PRIMARY KEY (`node2id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,7 +41,7 @@ CREATE TABLE `node2info` (
 
 LOCK TABLES `node2info` WRITE;
 /*!40000 ALTER TABLE `node2info` DISABLE KEYS */;
-INSERT INTO `node2info` VALUES (1,'node2institution','node2123','node2',NULL,NULL,'beds');
+INSERT INTO `node2info` VALUES (1,'node2institution','node2123','node2',NULL,NULL,'beds',NULL);
 /*!40000 ALTER TABLE `node2info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,8 +57,9 @@ CREATE TABLE `node2predictions` (
   `xpredvalues` text DEFAULT NULL,
   `ypredvalues` text DEFAULT NULL,
   `predictiontype` varchar(100) DEFAULT NULL,
+  `dataloss` varchar(700) DEFAULT NULL,
   PRIMARY KEY (`jobid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-02 17:15:47
+-- Dump completed on 2021-11-02 19:21:40
