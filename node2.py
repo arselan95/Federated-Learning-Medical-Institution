@@ -18,8 +18,8 @@ import time
 import json
 import uuid
 
-conn=None
 #check node2 database to get type of predictions entered by user
+conn=None
 conn=pymysql.connect(
     host='localhost',
     user='root',
@@ -32,8 +32,12 @@ sql1='select predictiontype from node2info where node2id=1;'
 cursor.execute(sql1)
 row=cursor.fetchone()
 predictiontype=row[0]
+cursor.close()
+conn.close()
+
 print("testing dataabse")
 print(predictiontype)
+
 
 finalrecord=[]
 finaltrecord=[]
@@ -192,6 +196,7 @@ plt.legend(prop={'size': 16})
 '''
 
 #global model database for admin
+conn=None
 conn=pymysql.connect(
     host='localhost',
     user='root',
@@ -219,8 +224,6 @@ sqlinsert=("node2","running",jobid.hex)
 cursor.execute(sql,sqlinsert)
 conn.commit()
 cursor.close()
-
-
 
 
 errors=[]
@@ -326,7 +329,7 @@ conn.commit()
 cursor.close()
 conn.close()
 
-print(len(json.dumps(xdict)))
+#mysql update node 2 with current latest predictions
 conn=None
 conn=pymysql.connect(
     host='localhost',
@@ -334,11 +337,10 @@ conn=pymysql.connect(
     password='',
     db='node2')
 cursor=None
-#mysql update node 2 with current latest predictions
 cursor=conn.cursor()
-sql2='update node2info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node2id=1'
-sql2where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
-cursor.execute(sql2,sql2where)
+sql3='update node2info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node2id=1'
+sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
+cursor.execute(sql3,sql3where)
 conn.commit()
 cursor.close()
 
@@ -346,12 +348,14 @@ cursor.close()
 #mysql update node 2 prediction history
 cursor=None
 cursor=conn.cursor()
-sql3='Insert into node2predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
-sql3insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
-cursor.execute(sql3,sql3insert)
+sql4='Insert into node2predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
+sql4insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
+cursor.execute(sql4,sql4insert)
 conn.commit()
 cursor.close()
 conn.close()
+
+
 
 
 
