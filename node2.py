@@ -221,6 +221,21 @@ conn.commit()
 cursor.close()
 
 
+
+#for demo update list model node (IGNORE THIS)
+dfile=pd.read_csv("demodatabase.csv")
+print("ok")
+print(dfile.index)
+if len(dfile.index) !=0:
+    dic=[[3,'captured node 3'],[2,'captured node 2']]
+    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
+    ddic.to_csv('demodatabase.csv')
+else:
+    dic=[[2,'captured node 2']]
+    ddic=pd.DataFrame(dic,columns=['nodenumber','event'])
+    ddic.to_csv('demodatabase.csv')
+#########################################################
+
 errors=[]
 #original epoch is 25
 for itrca in range(3):
@@ -299,6 +314,7 @@ print()
 print("predict")
 xdict={'xvalues':list(y_test)}
 ydict={'yvalues':list(y2ca_pred_train)}
+errlist={'loss':list(errors)}
 print(y_test)
 print(len(y_test))
 print(y2ca_pred_train)
@@ -333,8 +349,8 @@ conn=pymysql.connect(
 cursor=None
 #mysql update node 2 with current latest predictions
 cursor=conn.cursor()
-sql2='update node2info set xpredvalues=%s, ypredvalues=%s where node2id=1'
-sql2where=(json.dumps(xdict), json.dumps(ydict))
+sql2='update node2info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node2id=1'
+sql2where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
 cursor.execute(sql2,sql2where)
 conn.commit()
 cursor.close()
@@ -343,8 +359,8 @@ cursor.close()
 #mysql update node 2 prediction history
 cursor=None
 cursor=conn.cursor()
-sql3='Insert into node2predictions(xpredvalues,ypredvalues, predictiontype) values (%s,%s,%s);'
-sql3insert=(json.dumps(xdict), json.dumps(ydict),"beds")
+sql3='Insert into node2predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
+sql3insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
 cursor.execute(sql3,sql3insert)
 conn.commit()
 cursor.close()
@@ -352,6 +368,23 @@ conn.close()
 
 
 
+#IGNORE THIS
+testlist1=[[3,'captured node 3']]
+testlist=[]
+dfile=pd.read_csv("demodatabase.csv")
+if dfile.empty is False:
+    for l in range(len(dfile.index)):
+        event=dfile['event'][l]
+        if(event != 'captured node 2'):
+            tempdic=[l,event]
+            testlist.append(tempdic)
+
+    if len(testlist) !=0:
+        ddic=pd.DataFrame(testlist1,columns=['nodenumber','event'])
+        ddic.to_csv('demodatabase.csv')
+    if(len(testlist) ==0):
+        ddic=pd.DataFrame(columns=['nodenumber','event'])
+        ddic.to_csv('demodatabase.csv')
 
    
 
