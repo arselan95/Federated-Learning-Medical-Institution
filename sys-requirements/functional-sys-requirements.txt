@@ -12,3 +12,10 @@ after login (Each node) :
 
 after login (ADMIN):
 - can view nodes usage ( fetch from managenodes database)
+
+
+- put pickle file on S3 container (one S3 for each file)
+- mysql - > RDS ( 3 RDS instace)
+
+DUE by nov 19th 
+
