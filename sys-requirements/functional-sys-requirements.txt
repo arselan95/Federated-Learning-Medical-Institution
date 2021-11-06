@@ -4,11 +4,11 @@ functional system requirements:
 
 after login (Each node) :
 - user should be able to view csv data file
-- form to submit prediction job
-- history option to view past predictions (fetch x and y values from nodepredictions database)
-- View latest predictions (fetch x and y values from nodeinfo database)
-- display different types of prediction chart (fetch x and y values from nodeinfo database)
-- display mean error list (fetch errorlist from nodeinfo database )
+- form to submit prediction job - DONE 
+- history option to view past predictions (fetch x and y values from nodepredictions database) - DONE
+- View latest predictions (fetch x and y values from nodeinfo database) - DONE
+- display different types of prediction chart (fetch x and y values from nodeinfo database) - DONE
+- display mean error list (fetch errorlist from nodeinfo database ) - DONE
 
 after login (ADMIN):
 - can view nodes usage ( fetch from managenodes database)
