@@ -41,6 +41,7 @@ print(predictiontype)
 
 finalrecord=[]
 finaltrecord=[]
+default=200
 
 '''
 with open('calidata.csv', 'r') as infile, open('updatecalidata.csv', 'w',newline='') as outfile:
@@ -78,20 +79,22 @@ print(x.count)
 i=0
 if predictiontype=='beds':
     for i in range(2000):
-    	zrecord=[]
-    	zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
-    	zrecord.append(x['hospitalized_suspected_covid_patients'][i])
-    	zrecord.append(x['hospitalized_covid_patients'][i])
-    	zrecord.append(x['all_hospital_beds'][i])
-    	zrecord.append(x['icu_covid_confirmed_patients'][i])
-    	zrecord.append(x['icu_suspected_covid_patients'][i])
-    	zrecord.append(x['icu_available_beds'][i])
-    	zrecord = np.asarray(zrecord)
-    	finalrecord.append(zrecord)
-    	finaltrecord.append(x['all_hospital_beds'][i])
+        default=800
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['all_hospital_beds'][i])
 
 if predictiontype=='icubeds':
     for i in range(2000):
+        default=700
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -106,6 +109,7 @@ if predictiontype=='icubeds':
 
 if predictiontype=='covidpatients':
     for i in range(2000):
+        default=700
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -120,6 +124,7 @@ if predictiontype=='covidpatients':
 
 if predictiontype=='icupatients':
     for i in range(2000):
+        default=500
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -134,6 +139,7 @@ if predictiontype=='icupatients':
 
 if predictiontype=='suspectedcovid':
     for i in range(2000):
+        default=400
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -158,30 +164,9 @@ x_test=scaler.transform(x_test)
 
 
 ## Adding the prediction type Column in the data as requested by user
-if predictiontype=='beds':
-    train_data=pd.DataFrame(x_train)
-    train_data['beds']=y_train
-    train_data.head(3)
-
-if predictiontype=='icubeds':
-    train_data=pd.DataFrame(x_train)
-    train_data['icubeds']=y_train
-    train_data.head(3)
-
-if predictiontype=='covidpatients':
-    train_data=pd.DataFrame(x_train)
-    train_data['covidpatients']=y_train
-    train_data.head(3)
-
-if predictiontype=='icupatients':
-    train_data=pd.DataFrame(x_train)
-    train_data['icupatients']=y_train
-    train_data.head(3)
-
-if predictiontype=='suspectedcovid':
-    train_data=pd.DataFrame(x_train)
-    train_data['suspectedcovid']=y_train
-    train_data.head(3)
+train_data=pd.DataFrame(x_train)
+train_data['predictions']=y_train
+train_data.head(3)
 
 x_test=np.array(x_test)
 y_test=np.array(y_test)
@@ -232,7 +217,9 @@ bca=[]
 #FEDERATED 
 print("FEDERATED")
 print(train_data.shape)
-default=800
+#default=800
+print("default")
+print(default)
 
 #timer
 node2starttime=time.time()
@@ -318,7 +305,7 @@ for itrca in range(3):
         print("sending updated model back to the node")
         print("data loss captured by updated weights sent by Global model")
         print((mean_squared_error(y_test,y2ca_pred_train))/10)
-        loss=mean_squared_error(y_test,y1ca_pred_train)/10
+        loss=mean_squared_error(y_test,y2ca_pred_train)/10
         errors.append(loss)
 
 print()
@@ -360,8 +347,8 @@ conn=pymysql.connect(
     db='node2')
 cursor=None
 cursor=conn.cursor()
-sql3='update node2info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node2id=1'
-sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
+sql3='update node2info set xpredvalues=%s, ypredvalues=%s, dataloss=%s,jobstatus=%s where node2id=1'
+sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist),"completed")
 cursor.execute(sql3,sql3where)
 conn.commit()
 cursor.close()
@@ -370,8 +357,8 @@ cursor.close()
 #mysql update node 2 prediction history
 cursor=None
 cursor=conn.cursor()
-sql4='Insert into node2predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
-sql4insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
+sql4='Insert into node2predictions(jobid,xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s,%s);'
+sql4insert=(jobid.hex,json.dumps(xdict), json.dumps(ydict),predictiontype,json.dumps(errlist))
 cursor.execute(sql4,sql4insert)
 conn.commit()
 cursor.close()

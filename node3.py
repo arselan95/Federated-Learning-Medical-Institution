@@ -41,6 +41,7 @@ print(predictiontype)
 
 finalrecord=[]
 finaltrecord=[]
+default=200
 
 
 '''
@@ -81,18 +82,81 @@ x=x.reset_index()
 print(x.count)
 
 i=0
-for i in range(3000):
-	zrecord=[]
-	zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
-	zrecord.append(x['hospitalized_suspected_covid_patients'][i])
-	zrecord.append(x['hospitalized_covid_patients'][i])
-	zrecord.append(x['all_hospital_beds'][i])
-	zrecord.append(x['icu_covid_confirmed_patients'][i])
-	zrecord.append(x['icu_suspected_covid_patients'][i])
-	zrecord.append(x['icu_available_beds'][i])
-	zrecord = np.asarray(zrecord)
-	finalrecord.append(zrecord)
-	finaltrecord.append(x['all_hospital_beds'][i])
+
+if predictiontype=='beds':
+    for i in range(3000):
+        default=800
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['all_hospital_beds'][i])
+
+if predictiontype=='icubeds':
+    for i in range(3000):
+        default=700
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['icu_available_beds'][i])
+
+if predictiontype=='covidpatients':
+    for i in range(3000):
+        default=800
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['hospitalized_covid_patients'][i])
+
+if predictiontype=='icupatients':
+    for i in range(3000):
+        default=900
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['icu_covid_confirmed_patients'][i])
+
+if predictiontype=='suspectedcovid':
+    for i in range(3000):
+        default=400
+        zrecord=[]
+        zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
+        zrecord.append(x['hospitalized_suspected_covid_patients'][i])
+        zrecord.append(x['hospitalized_covid_patients'][i])
+        zrecord.append(x['all_hospital_beds'][i])
+        zrecord.append(x['icu_covid_confirmed_patients'][i])
+        zrecord.append(x['icu_suspected_covid_patients'][i])
+        zrecord.append(x['icu_available_beds'][i])
+        zrecord = np.asarray(zrecord)
+        finalrecord.append(zrecord)
+        finaltrecord.append(x['hospitalized_suspected_covid_patients'][i])
 
 
 finaltrecord=np.asarray(finaltrecord)
@@ -106,7 +170,7 @@ x_test=scaler.transform(x_test)
 
 ## Adding the BED Column in the data
 train_data=pd.DataFrame(x_train)
-train_data['beds']=y_train
+train_data['predictions']=y_train
 train_data.head(3)
 
 x_test=np.array(x_test)
@@ -156,7 +220,9 @@ bca=[]
 #FEDERATED 
 print("FEDERATED")
 print(train_data.shape)
-default=800
+#default=800
+print("default")
+print(default)
 
 #timer
 node3starttime=time.time()
@@ -283,8 +349,8 @@ conn=pymysql.connect(
     db='node3')
 cursor=None
 cursor=conn.cursor()
-sql3='update node3info set xpredvalues=%s, ypredvalues=%s, dataloss=%s where node3id=2'
-sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist))
+sql3='update node3info set xpredvalues=%s, ypredvalues=%s, dataloss=%s, jobstatus=%s where node3id=2'
+sql3where=(json.dumps(xdict), json.dumps(ydict),json.dumps(errlist), "completed")
 cursor.execute(sql3,sql3where)
 conn.commit()
 cursor.close()
@@ -293,8 +359,8 @@ cursor.close()
 #mysql update node 3 prediction history
 cursor=None
 cursor=conn.cursor()
-sql4='Insert into node3predictions(xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s);'
-sql4insert=(json.dumps(xdict), json.dumps(ydict),"beds",json.dumps(errlist))
+sql4='Insert into node3predictions(jobid,xpredvalues,ypredvalues,predictiontype,dataloss) values (%s,%s,%s,%s,%s);'
+sql4insert=(jobid.hex,json.dumps(xdict), json.dumps(ydict),predictiontype,json.dumps(errlist))
 cursor.execute(sql4,sql4insert)
 conn.commit()
 cursor.close()

@@ -16,14 +16,14 @@ from matplotlib.pyplot import figure
 import math
 #ddic=pd.DataFrame(columns=['nodenumber','event'])
 #ddic.to_csv('demodatabase.csv')
-'''
+
 dfile=pd.read_csv("demodatabase.csv")
-print(len(dfile.index))
 if dfile.empty is False:
-    print(dfile['event'].to_string(index=False))
+    event=dfile['event'].to_string(index=False)
+    print(event)
 else:
     print("No new events")
-'''
+
 class model():
     loss=0
     losshelper=[]
@@ -51,8 +51,8 @@ class model():
             temp=X.sample(k)
             
             # We create our X and Y from the above temp dataset
-            y=np.array(temp['beds'])
-            x=np.array(temp.drop('beds',axis=1))
+            y=np.array(temp['predictions'])
+            x=np.array(temp.drop('predictions',axis=1))
             
             # We keep our initial gradients as 0
             w_gradient=np.zeros(shape=(1,X.shape[1]-1))
@@ -73,7 +73,7 @@ class model():
             #Dividing the learning rate by the specified value
             learning_rate=learning_rate/divideby
 
-            
+
         return w,b #Returning the weights and Bias
 
     def predict(a,x,w,b):
