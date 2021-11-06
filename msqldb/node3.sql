@@ -31,6 +31,7 @@ CREATE TABLE `node3info` (
   `ypredvalues` text DEFAULT NULL,
   `predictiontype` varchar(100) DEFAULT NULL,
   `dataloss` varchar(700) DEFAULT NULL,
+  `jobstatus` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`node3id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +42,7 @@ CREATE TABLE `node3info` (
 
 LOCK TABLES `node3info` WRITE;
 /*!40000 ALTER TABLE `node3info` DISABLE KEYS */;
-INSERT INTO `node3info` VALUES (2,'node3institution','node3123','node3',NULL,NULL,'beds',NULL);
+INSERT INTO `node3info` VALUES (2,'node3institution','node3123','node3',NULL,NULL,'icubeds',NULL,'completed');
 /*!40000 ALTER TABLE `node3info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,13 +54,13 @@ DROP TABLE IF EXISTS `node3predictions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `node3predictions` (
-  `jobid` int(11) NOT NULL AUTO_INCREMENT,
+  `jobid` varchar(255) NOT NULL,
   `xpredvalues` text DEFAULT NULL,
   `ypredvalues` text DEFAULT NULL,
   `predictiontype` varchar(100) DEFAULT NULL,
   `dataloss` varchar(700) DEFAULT NULL,
   PRIMARY KEY (`jobid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-03 13:17:13
+-- Dump completed on 2021-11-05 17:34:36
