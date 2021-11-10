@@ -51,6 +51,43 @@ def login():
 				jobupdate=row[0]
 				cursor.close()
 				conn.close()
+
+				counties = []
+				beds = []
+				covidpatients=[]
+				icubeds=[]
+				icucovid=[]
+				suspectedcovid=[]
+				  
+				with open('updatedbayareanode2.pickle','rb') as f1:
+					tempframe = pickle.load(f1)
+				for i in range(2000):
+					counties.append(tempframe['county'][i])
+					beds.append(tempframe['all_hospital_beds'][i])
+					icubeds.append(tempframe['icu_available_beds'][i])
+				beds=np.array(beds)
+				counties=np.array(counties)
+				icubeds=np.array(icubeds)
+
+				fignode2data,axnode2data=plt.subplots(figsize=(25,5))
+				plt.scatter(counties, icubeds)
+				plt.xlabel('Counties')
+				plt.ylabel('ICU Beds')
+				plt.legend(prop={'size': 30})
+				#mpld3.show()
+				node2piepngname="static"+"/"+"node2datasetscatter"+".png"
+				plt.savefig(node2piepngname)
+
+				fignode2data2,axnode2data2=plt.subplots(figsize=(25,5))
+				plt.bar(counties, beds, color = 'lightblue', width = 0.72, label = "beds vs counties")
+				plt.xlabel('Counties')
+				plt.ylabel('Beds')
+				plt.legend(prop={'size': 16})
+				node2databarpngname="static"+"/"+"node2datasetbar"+".png"
+				plt.savefig(node2databarpngname)
+
+
+
 				if(jobupdate=="started"):
 					return render_template('dashboard.html',data="node2", predictionstatus="running")
 				else:
@@ -75,6 +112,41 @@ def login():
 				jobupdate=row[0]
 				cursor.close()
 				conn.close()
+
+				counties = []
+				beds = []
+				covidpatients=[]
+				icubeds=[]
+				icucovid=[]
+				suspectedcovid=[]
+				  
+				with open('updatedbayareanode3.pickle','rb') as f1:
+					tempframe = pickle.load(f1)
+				for i in range(2000):
+					counties.append(tempframe['county'][i])
+					beds.append(tempframe['all_hospital_beds'][i])
+					icubeds.append(tempframe['icu_available_beds'][i])
+				beds=np.array(beds)
+				counties=np.array(counties)
+				icubeds=np.array(icubeds)
+
+				fignode2data,axnode2data=plt.subplots(figsize=(25,5))
+				plt.scatter(counties, icubeds)
+				plt.xlabel('Counties')
+				plt.ylabel('ICU Beds')
+				plt.legend(prop={'size': 30})
+				#mpld3.show()
+				node3piepngname="static"+"/"+"node3datasetscatter"+".png"
+				plt.savefig(node3piepngname)
+
+				fignode3data3,axnode3data3=plt.subplots(figsize=(25,5))
+				plt.bar(counties, beds, color = 'lightblue', width = 0.72, label = "beds vs counties")
+				plt.xlabel('Counties')
+				plt.ylabel('Beds')
+				plt.legend(prop={'size': 16})
+				node3databarpngname="static"+"/"+"node3datasetbar"+".png"
+				plt.savefig(node3databarpngname)
+
 				if(jobupdate=="started"):
 					return render_template('dashboard.html',data="node3", predictionstatus="running")
 				else:
@@ -198,6 +270,7 @@ def viewJobList():
 					totaltime= "-"
 				else:
 					totaltime=row[jobs][3]
+					totaltime=float(totaltime)/50
 				tempjoblist={"No.": index, "timestarted": timestart, "status": status, "totaltime": totaltime, "joblink" : joblink}
 				finaljoblist.append(tempjoblist)
 			cursor.close()
@@ -228,6 +301,7 @@ def viewJobList():
 					totaltime= "-"
 				else:
 					totaltime=row[jobs][3]
+					totaltime=float(totaltime)/50
 				tempjoblist={"No.": index, "timestarted": timestart, "status": status, "totaltime": totaltime, "joblink" : joblink}
 				finaljoblist.append(tempjoblist)
 			cursor.close()
@@ -272,7 +346,7 @@ def viewJob(jobid):
 				if predictiontype=="beds":
 					templos={"index":los,"error":dataloss[los]}
 				else:
-					templos={"index":los,"error":dataloss[los]*1000}
+					templos={"index":los,"error":dataloss[los]*100}
 				senddataloss.append(templos)
 
 			xvalues=np.array(xvalues)
@@ -323,7 +397,27 @@ def viewJob(jobid):
 			with open('updatedbayareanode2.pickle','rb') as f1:
 				tempframe = pickle.load(f1)
 			tempframe=tempframe.head(len(yvalues))
-			print(tempframe)
+
+			'''
+			if(predictiontype=='beds'):
+				dates=[]
+				beds=[]
+				for j in range(len(yvalues)):
+					dates.append(tempframe['hospitalized_covid_patients'][j])
+					beds.append(tempframe['all_hospital_beds'][j])
+
+			dates=np.array(dates)
+			print(dates)
+			fig5,ax5=plt.subplots(figsize=(25,5))
+			plt.plot(xvalues, yvalues)
+			#plt.plot(dates, label='Original')
+			plt.legend(prop={'size': 30})
+			pltpredpngname="static"+"/"+"node2plotpred"+jobid+".png"
+			plt.savefig(pltpredpngname)
+			mpld3.show()
+			'''
+
+			tempframe[predictiontype]=xvalues
 			tempframe['Predictions']=yvalues
 			csvfilename="static"+"/"+"node2csvpredictions"+jobid+".csv"
 			tempframe.to_csv(csvfilename)
@@ -371,7 +465,7 @@ def viewJob(jobid):
 				if predictiontype=="beds":
 					templos={"index":los,"error":data3loss[los]}
 				else:
-					templos={"index":los,"error":data3loss[los]*100}
+					templos={"index":los,"error":data3loss[los]*10}
 				senddata3loss.append(templos)
 
 			x3values=np.array(x3values)
@@ -423,6 +517,7 @@ def viewJob(jobid):
 				tempframe = pickle.load(f1)
 			tempframe=tempframe.head(len(y3values))
 			print(tempframe)
+			tempframe[predictiontype]=x3values
 			tempframe['Predictions']=y3values
 			csv3filename="static"+"/"+"node3csvpredictions"+jobid+".csv"
 			tempframe.to_csv(csv3filename)

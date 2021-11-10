@@ -237,7 +237,8 @@ cursor.close()
 
 errors=[]
 #original epoch is 25
-for itrca in range(3):
+#18
+for itrca in range(4):
     itrca=itrca+1
     localmodel=model()
     

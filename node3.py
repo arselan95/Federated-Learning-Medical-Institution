@@ -100,7 +100,7 @@ if predictiontype=='beds':
 
 if predictiontype=='icubeds':
     for i in range(3000):
-        default=700
+        default=500
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -115,7 +115,7 @@ if predictiontype=='icubeds':
 
 if predictiontype=='covidpatients':
     for i in range(3000):
-        default=800
+        default=600
         zrecord=[]
         zrecord.append(x['hospitalized_covid_confirmed_patients'][i])
         zrecord.append(x['hospitalized_suspected_covid_patients'][i])
@@ -239,7 +239,7 @@ cursor.close()
 
 errors=[]
 #original epoch is 25
-for itrca in range(3):
+for itrca in range(25):
     itrca=itrca+1
     localmodel=model()
     
