@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="{{ url_for('static', filename= 'css/login.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename= 'css/app.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename= 'css/dashboard.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -23,7 +24,6 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 hr.new1 {
   border-top: 1px solid black;
 }
-
 </style>
 </head>
 <body>
@@ -49,6 +49,98 @@ hr.new1 {
 </div>
 
 <div class="w3-content w3-padding" style="max-width:1564px">
+  <div class="w3-container w3-padding-32" id="contact">
+    <h3>Your Dataset</h3>
+    <hr class="new1">
+    {%if data=="node2"%}
+    <button type="button" class="collapsible"><img src="{{ url_for('static', filename = 'bottomarrow'+'.jpg' ) }}" alt="Trulli" align="right" width="50" height="50"><h3>California Bay area Countys COVID Medical Records</h3> </button>
+    <div class="content">
+      <div class="w3-container w3-padding-32" id="contact">
+        <h4>Total taken hospital beds by county</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetbar'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+
+      <div class="w3-container w3-padding-32" id="contact">
+        <h4>Total taken ICU beds by county</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetscatter'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+        <div class="w3-container w3-padding-32" id="contact">
+          <h4>Number of beds per COVID case</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetwire'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+
+          <div class="w3-container w3-padding-32" id="contact">
+            <h4>Hospitalization by County</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetsphere'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+          <div class="w3-container w3-padding-32" id="contact">
+          <h4>Hospitalized COVID patients by date</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetbubble'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+          <div class="w3-container w3-padding-32" id="contact">
+            <h4>ICU patients by date</h4>
+    <img src="{{ url_for('static', filename = 'node2datasetconvex'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+</div>
+
+    {%else%}
+     <button type="button" class="collapsible"><img src="{{ url_for('static', filename = 'bottomarrow'+'.jpg' ) }}" alt="Trulli" align="right" width="50" height="50"><h3>Southern California Countys COVID Medical Records</h3> </button>
+    <div class="content">
+            <div class="w3-container w3-padding-32" id="contact">
+        <h4>Total taken hospital beds by county</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetbar'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+
+      <div class="w3-container w3-padding-32" id="contact">
+        <h4>Total taken ICU beds by county</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetscatter'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+        <div class="w3-container w3-padding-32" id="contact">
+          <h4>Number of beds per COVID case</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetwire'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+
+          <div class="w3-container w3-padding-32" id="contact">
+            <h4>Hospitalization by County</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetsphere'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+          <div class="w3-container w3-padding-32" id="contact">
+          <h4>Hospitalized COVID patients by date</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetbubble'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+
+          <div class="w3-container w3-padding-32" id="contact">
+            <h4>ICU patients by date</h4>
+    <img src="{{ url_for('static', filename = 'node3datasetconvex'+'.png' ) }}" alt="Trulli" width="1500" height="400">
+  </div>
+</div>
+    {%endif%} 
+  <script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>   
+  </div>
 <div class="w3-container w3-padding-32" id="contact">
     <h3>Get Predictions</h3><hr class="new1">
   {%if predictionstatus=="completed"%}

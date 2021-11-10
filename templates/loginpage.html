@@ -18,37 +18,29 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
   bottom: 0;
   height: inherit;
 }
+.bg-text{
+  background-image: url("{{ url_for('static', filename= 'back.jpg') }}");
+  padding-top: -5px;
+  padding-bottom: 350px;
+}
 </style>
 </head>
-<body>
+
+<body class="bg-text">
   {%if data!=""%}
 <script>
   alert("Please Enter Correct Username and Password");
 </script>
 {%endif%}
 
+<div class="bg-text">
 <!-- Navbar -->
-<div class="w3-top">
   <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
-    <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
     <a href="#" class="w3-bar-item w3-button w3-theme-l1">Federated Learning for Medical Instutions</a>
   </div>
-</div>
-<div class="w3-main" style="margin-left:250px">
 
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-<!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-  <div class="w3-row w3-padding-64">
-    <div class="w3-third w3-container">
-    </div>
-  </div>
-  <!-- Pagination -->
-  <div class="w3-center w3-padding-32">
-  </div>
-
-<div class="wrapper">
+<div class="wrapper2" style="padding-top: 350px" >
 <form class="form-signin" action="/login" method="POST" id="login-form">       
 <h2 class="form-signin-heading">Please login</h2>
 <input type="text" class="form-control" name="username"  id="username" placeholder="Email Address" required="" autofocus="" /><br><br>
