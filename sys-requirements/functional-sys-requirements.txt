@@ -3,7 +3,8 @@ functional system requirements:
 - login start session - DONE
 
 after login (Each node) :
-- user should be able to view csv data file
+- user should be able to view csv data file - DONE
+- visualize original data - DONE 
 - form to submit prediction job - DONE 
 - history option to view past predictions (fetch x and y values from nodepredictions database) - DONE
 - View latest predictions (fetch x and y values from nodeinfo database) - DONE
@@ -11,7 +12,8 @@ after login (Each node) :
 - display mean error list (fetch errorlist from nodeinfo database ) - DONE
 
 after login (ADMIN):
-- can view nodes usage ( fetch from managenodes database)
+- can view nodes usage ( fetch from managenodes database) - DONE
+- refresh for live usage - DONE
 
 
 - put pickle file on S3 container (one S3 for each file)
