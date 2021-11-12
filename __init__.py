@@ -152,6 +152,45 @@ def login():
 				else:
 					return render_template('dashboard.html',data="node3", predictionstatus="completed")
 
+		if(user=="admin" and password=="admin123"):
+			print("here")
+			session['adminsession']="3"
+			if 'adminsession' in session:
+				print(session['adminsession'])
+				runningjobs=[]
+				completedjobs=[]
+				conn=None
+				conn=pymysql.connect(
+				    host='localhost',
+				    user='root',
+				    password='',
+				    db='globalnode')
+				cursor=None
+				cursor=conn.cursor()
+				sqladmin0='select * from managenodes;'
+				cursor.execute(sqladmin0)
+				records=cursor.fetchall()
+				for row in range(len(records)):
+					index=row+1
+					nodename=records[row][0]
+					print(nodename)
+					starttime=records[row][2]
+					jobstatus=records[row][4]
+					if (jobstatus=="running"):
+						temprunningjob={"index":index,"node":nodename, "starttime":starttime,"status":jobstatus}
+						runningjobs.append(temprunningjob)
+					else:
+						totaltime=records[row][3]
+						tempcompletedjob={"index":index,"node":nodename, "starttime":starttime,"status":jobstatus,"totaltime":totaltime}
+						completedjobs.append(tempcompletedjob)
+				cursor.close()
+				conn.close()
+				print(runningjobs)
+				print("---")
+				print(completedjobs)
+
+				return render_template('admin.html',runjobs=runningjobs,donejobs=completedjobs)
+
 		else:
 			return render_template('loginpage.html', data="wrong credentials")
 
@@ -197,6 +236,43 @@ def home():
 					return render_template('dashboard.html',data="node3", predictionstatus="running")
 				else:
 					return render_template('dashboard.html',data="node3", predictionstatus="completed")
+
+		if 'adminsession' in session:
+			print("her2")
+			print(session['adminsession'])
+			runningjobs=[]
+			completedjobs=[]
+			conn=None
+			conn=pymysql.connect(
+			    host='localhost',
+			    user='root',
+			    password='',
+			    db='globalnode')
+			cursor=None
+			cursor=conn.cursor()
+			sqladmin1='select * from managenodes;'
+			cursor.execute(sqladmin1)
+			records=cursor.fetchall()
+			for row in range(len(records)):
+				index=row+1
+				nodename=records[row][0]
+				print(nodename)
+				starttime=records[row][2]
+				jobstatus=records[row][4]
+				if (jobstatus=="running"):
+					temprunningjob={"index":index,"node":nodename, "starttime":starttime,"status":jobstatus}
+					runningjobs.append(temprunningjob)
+				else:
+					totaltime=records[row][3]
+					tempcompletedjob={"index":index,"node":nodename, "starttime":starttime,"status":jobstatus,"totaltime":totaltime}
+					completedjobs.append(tempcompletedjob)
+			cursor.close()
+			conn.close()
+			print(runningjobs)
+			print("---")
+			print(completedjobs)
+
+			return render_template('admin.html',runjobs=runningjobs,donejobs=completedjobs)
 
 
 
@@ -307,7 +383,11 @@ def viewJobList():
 			cursor.close()
 			conn.close()
 			return render_template("joblist.html",jobslist=finaljoblist, data="node3")
-			
+
+def find_nearest(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return array[idx]			
 
 @app.route("/viewJobList/<jobid>", methods = ['POST', 'GET'])
 def viewJob(jobid):
@@ -385,6 +465,15 @@ def viewJob(jobid):
 			plt.legend(prop={'size': 30})
 			gridpngname="static"+"/"+"node2grid"+jobid+".png"
 			plt.savefig(gridpngname)
+
+			fig5,ax5=plt.subplots(1, figsize=(25,5))
+			plt.plot(xvalues,yvalues,color='blue')
+			plt.xlabel('Original')
+			plt.ylabel('Predicted')
+			#mpld3.show()
+
+			slopechartpngname="static"+"/"+"node2slopechart"+jobid+".png"
+			plt.savefig(gridpngname)
 			
 
 			csvheader=['Predicted Beds']
@@ -398,27 +487,75 @@ def viewJob(jobid):
 				tempframe = pickle.load(f1)
 			tempframe=tempframe.head(len(yvalues))
 
-			'''
-			if(predictiontype=='beds'):
-				dates=[]
-				beds=[]
-				for j in range(len(yvalues)):
-					dates.append(tempframe['hospitalized_covid_patients'][j])
-					beds.append(tempframe['all_hospital_beds'][j])
 
-			dates=np.array(dates)
-			print(dates)
-			fig5,ax5=plt.subplots(figsize=(25,5))
-			plt.plot(xvalues, yvalues)
+			
 			#plt.plot(dates, label='Original')
-			plt.legend(prop={'size': 30})
-			pltpredpngname="static"+"/"+"node2plotpred"+jobid+".png"
-			plt.savefig(pltpredpngname)
-			mpld3.show()
-			'''
+			#plt.legend(prop={'size': 30})
+			#pltpredpngname="static"+"/"+"node2plotpred"+jobid+".png"
+			#plt.savefig(pltpredpngname)
+			
+			
 
 			tempframe[predictiontype]=xvalues
 			tempframe['Predictions']=yvalues
+			tempframe2=tempframe['Predictions'].unique()
+
+			tempframe3=tempframe['icu_covid_confirmed_patients'].unique()
+			tempframe4=tempframe['hospitalized_covid_confirmed_patients'].unique()
+			tempframe5=tempframe['all_hospital_beds'].unique()
+			tempframe6=tempframe['icu_available_beds'].unique()
+			tempframe7=tempframe[predictiontype].unique()
+
+			tempframe3=np.sort(tempframe3)
+			tempframe4=np.sort(tempframe4)
+			tempframe5=np.sort(tempframe5)
+			tempframe6=np.sort(tempframe6)
+			tempframe7=np.sort(tempframe7)
+			tempframe2=np.sort(tempframe2)
+			
+
+			if(predictiontype=='icubeds'):
+				tempframe2=tempframe2[::-1]
+				dates=[]
+				beds=[]
+				for j in range(len(tempframe3)):
+					dates.append(tempframe3[j])
+					beds.append(tempframe2[j])
+
+				dates=np.array(dates)
+				beds=np.array(beds)
+
+
+				fig6,ax6=plt.subplots(1,figsize=(25,5))
+				plt.plot(dates,beds)
+				plt.xlabel('ICU COVID Patients')
+				plt.ylabel('Predicted ICU Beds')
+				print(len(tempframe2))
+				node2icubedpngname="static"+"/"+"node2icubed"+jobid+".png"
+				plt.savefig(node2icubedpngname)
+				#mpld3.show()
+
+			if(predictiontype=='beds'):
+				tempframe2=tempframe2[::-1]
+				alldates=[]
+				allbeds=[]
+				for j in range(len(tempframe4)):
+					alldates.append(tempframe4[j])
+					allbeds.append(tempframe2[j])
+
+				alldates=np.array(alldates)
+				allbeds=np.array(allbeds)
+
+
+				fig7,ax7=plt.subplots(1,figsize=(25,5))
+				plt.plot(allbeds,alldates)
+				plt.xlabel('COVID Patients')
+				plt.ylabel('Predicted Beds')
+				print(len(tempframe2))
+				node2bedpngname="static"+"/"+"node2bed"+jobid+".png"
+				plt.savefig(node2bedpngname)
+				#mpld3.show()
+
 			csvfilename="static"+"/"+"node2csvpredictions"+jobid+".csv"
 			tempframe.to_csv(csvfilename)
 			
@@ -517,6 +654,65 @@ def viewJob(jobid):
 				tempframe = pickle.load(f1)
 			tempframe=tempframe.head(len(y3values))
 			print(tempframe)
+			
+			tempframe[predictiontype]=x3values
+			tempframe['Predictions']=y3values
+			tempframe2=tempframe['Predictions'].unique()
+
+			tempframe3=tempframe['icu_covid_confirmed_patients'].unique()
+			tempframe4=tempframe['hospitalized_covid_confirmed_patients'].unique()
+			tempframe5=tempframe['all_hospital_beds'].unique()
+			tempframe6=tempframe['icu_available_beds'].unique()
+
+			tempframe3=np.sort(tempframe3)
+			tempframe4=np.sort(tempframe4)
+			tempframe5=np.sort(tempframe5)
+			tempframe6=np.sort(tempframe6)
+			tempframe2=np.sort(tempframe2)
+			
+
+			if(predictiontype=='icubeds'):
+				tempframe2=tempframe2[::-1]
+				dates=[]
+				beds=[]
+				for j in range(len(tempframe3)):
+					dates.append(tempframe3[j])
+					beds.append(tempframe2[j])
+
+				dates=np.array(dates)
+				beds=np.array(beds)
+
+
+				fig36,ax36=plt.subplots(1,figsize=(25,5))
+				plt.plot(dates,beds)
+				plt.xlabel('ICU COVID Patients')
+				plt.ylabel('Predicted ICU Beds')
+				print(len(tempframe2))
+				node3icubedpngname="static"+"/"+"node3icubed"+jobid+".png"
+				plt.savefig(node3icubedpngname)
+				#mpld3.show()
+
+			if(predictiontype=='beds'):
+				tempframe2=tempframe2[::-1]
+				alldates=[]
+				allbeds=[]
+				for j in range(len(tempframe4)):
+					alldates.append(tempframe4[j])
+					allbeds.append(tempframe2[j])
+
+				alldates=np.array(alldates)
+				allbeds=np.array(allbeds)
+
+
+				fig37,ax37=plt.subplots(1,figsize=(25,5))
+				plt.plot(alldates,allbeds)
+				plt.xlabel('COVID Patients')
+				plt.ylabel('Predicted Beds')
+				print(len(tempframe2))
+				node3bedpngname="static"+"/"+"node3bed"+jobid+".png"
+				plt.savefig(node3bedpngname)
+
+
 			tempframe[predictiontype]=x3values
 			tempframe['Predictions']=y3values
 			csv3filename="static"+"/"+"node3csvpredictions"+jobid+".csv"
@@ -810,6 +1006,9 @@ def logout():
 			return render_template ('loginpage.html', data="")
 		if 'node3session' in session:
 			session.pop('node3session')
+			return render_template ('loginpage.html', data="")
+		if 'adminsession' in session:
+			session.pop('adminsession')
 			return render_template ('loginpage.html', data="")
 
 
