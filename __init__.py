@@ -39,10 +39,10 @@ def login():
 				print(session['node2session'])
 				conn=None
 				conn=pymysql.connect(
-				    host='localhost',
-				    user='root',
-				    password='',
-				    db='node2')
+					host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+					user='admin',
+					password='node2123',
+					db='node2db')
 				cursor=None
 				cursor=conn.cursor()
 				sql0='select jobstatus from node2info where node2id=1;'
@@ -100,10 +100,10 @@ def login():
 				print(session['node3session'])
 				conn=None
 				conn=pymysql.connect(
-				    host='localhost',
-				    user='root',
-				    password='',
-				    db='node3')
+					host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+					user='admin',
+					password='node3123',
+					db='node3db')
 				cursor=None
 				cursor=conn.cursor()
 				sqlnode30='select jobstatus from node3info where node3id=2;'
@@ -161,10 +161,10 @@ def login():
 				completedjobs=[]
 				conn=None
 				conn=pymysql.connect(
-				    host='localhost',
-				    user='root',
-				    password='',
-				    db='globalnode')
+				    host='globalnode.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				    user='admin',
+				    password='nodeglobal123',
+				    db='globalnodedb')
 				cursor=None
 				cursor=conn.cursor()
 				sqladmin0='select * from managenodes;'
@@ -200,10 +200,10 @@ def home():
 		if 'node2session' in session:
 				conn=None
 				conn=pymysql.connect(
-				    host='localhost',
-				    user='root',
-				    password='',
-				    db='node2')
+					host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+					user='admin',
+					password='node2123',
+					db='node2db')
 				cursor=None
 				cursor=conn.cursor()
 				sqlhomenode2='select jobstatus from node2info where node2id=1;'
@@ -220,10 +220,10 @@ def home():
 		if 'node3session' in session:
 				conn=None
 				conn=pymysql.connect(
-				    host='localhost',
-				    user='root',
-				    password='',
-				    db='node3')
+					host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+					user='admin',
+					password='node3123',
+					db='node3db')
 				cursor=None
 				cursor=conn.cursor()
 				sqlhomenode3='select jobstatus from node3info where node3id=2;'
@@ -244,10 +244,10 @@ def home():
 			completedjobs=[]
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='globalnode')
+				host='globalnode.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='nodeglobal123',
+				db='globalnodedb')
 			cursor=None
 			cursor=conn.cursor()
 			sqladmin1='select * from managenodes;'
@@ -284,10 +284,10 @@ def submitPredictionJob():
 			print(predictiontypeinput)
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sql1='update node2info set predictiontype=%s, xpredvalues=null, ypredvalues=null, dataloss=null,jobstatus=%s where node2id=1'
@@ -304,10 +304,10 @@ def submitPredictionJob():
 			print(predictiontypeinput)
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sql2='update node3info set predictiontype=%s, xpredvalues=null, ypredvalues=null, dataloss=null,jobstatus=%s where node3id=2'
@@ -326,10 +326,10 @@ def viewJobList():
 			finaljoblist=[]
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='globalnode')
+				host='globalnode.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='nodeglobal123',
+				db='globalnodedb')
 			cursor=None
 			cursor=conn.cursor()
 			sqljobnode2='select * from managenodes where nodename="node2" order by starttime DESC;'
@@ -357,10 +357,10 @@ def viewJobList():
 			finaljoblist=[]
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='globalnode')
+				host='globalnode.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='nodeglobal123',
+				db='globalnodedb')
 			cursor=None
 			cursor=conn.cursor()
 			sqljobnode3='select * from managenodes where nodename="node3" order by managenodes.starttime DESC;'
@@ -395,10 +395,10 @@ def viewJob(jobid):
 		if 'node2session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode2job="Select * from node2predictions where jobid=%s"
@@ -571,10 +571,10 @@ def viewJob(jobid):
 		if 'node3session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode3job="Select * from node3predictions where jobid=%s"
@@ -734,10 +734,10 @@ def viewplt(jobid):
 		if 'node2session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode2plot="Select * from node2predictions where jobid=%s"
@@ -765,10 +765,10 @@ def viewplt(jobid):
 		if 'node3session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode3plot="Select * from node3predictions where jobid=%s"
@@ -799,10 +799,10 @@ def viewsct(jobid):
 		if 'node2session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode2sct="Select * from node2predictions where jobid=%s"
@@ -831,10 +831,10 @@ def viewsct(jobid):
 		if 'node3session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode3sct="Select * from node3predictions where jobid=%s"
@@ -866,10 +866,10 @@ def viewbar(jobid):
 		if 'node2session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode2bar="Select * from node2predictions where jobid=%s"
@@ -898,10 +898,10 @@ def viewbar(jobid):
 		if 'node3session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode3bar="Select * from node3predictions where jobid=%s"
@@ -933,10 +933,10 @@ def viewgrid(jobid):
 		if 'node2session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node2')
+				host='node2.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+				user='admin',
+				password='node2123',
+				db='node2db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode2grid="Select * from node2predictions where jobid=%s"
@@ -966,10 +966,10 @@ def viewgrid(jobid):
 		if 'node3session' in session:
 			conn=None
 			conn=pymysql.connect(
-			    host='localhost',
-			    user='root',
-			    password='',
-			    db='node3')
+			    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+			    user='admin',
+			    password='node3123',
+			    db='node3db')
 			cursor=None
 			cursor=conn.cursor()
 			sqlnode3grid="Select * from node3predictions where jobid=%s"

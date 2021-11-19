@@ -22,10 +22,10 @@ import uuid
 #check node3 database to get type of predictions entered by user
 conn=None
 conn=pymysql.connect(
-    host='localhost',
-    user='root',
-    password='',
-    db='node3')
+    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+    user='admin',
+    password='node3123',
+    db='node3db')
 
 cursor=None
 cursor=conn.cursor()
@@ -209,10 +209,10 @@ plt.legend(prop={'size': 16})
 #global model database for admin
 conn=None
 conn=pymysql.connect(
-    host='localhost',
-    user='root',
-    password='',
-    db='globalnode')
+    host='globalnode.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+    user='admin',
+    password='nodeglobal123',
+    db='globalnodedb')
 cursor=None
 wca=[]
 bca=[]
@@ -343,10 +343,10 @@ conn.close()
 #mysql update node 3 with current latest predictions
 conn=None
 conn=pymysql.connect(
-    host='localhost',
-    user='root',
-    password='',
-    db='node3')
+    host='node3.c7vgobnd7uck.us-west-1.rds.amazonaws.com',
+    user='admin',
+    password='node3123',
+    db='node3db')
 cursor=None
 cursor=conn.cursor()
 sql3='update node3info set xpredvalues=%s, ypredvalues=%s, dataloss=%s, jobstatus=%s where node3id=2'

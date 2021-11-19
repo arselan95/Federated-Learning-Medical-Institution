@@ -17,12 +17,12 @@ import math
 #ddic=pd.DataFrame(columns=['nodenumber','event'])
 #ddic.to_csv('demodatabase.csv')
 
-dfile=pd.read_csv("demodatabase.csv")
-if dfile.empty is False:
-    event=dfile['event'].to_string(index=False)
-    print(event)
-else:
-    print("No new events")
+# dfile=pd.read_csv("demodatabase.csv")
+# if dfile.empty is False:
+#     event=dfile['event'].to_string(index=False)
+#     print(event)
+# else:
+#     print("No new events")
 
 class model():
     loss=0
