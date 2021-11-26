@@ -47,10 +47,10 @@ class model():
         cur_iter=1
         while(cur_iter<=n_iter): 
 
-            # We will create a small training data set of size K
+            # batch size
             temp=X.sample(k)
             
-            # We create our X and Y from the above temp dataset
+            #Update prediction column
             y=np.array(temp['predictions'])
             x=np.array(temp.drop('predictions',axis=1))
             
@@ -58,19 +58,18 @@ class model():
             w_gradient=np.zeros(shape=(1,X.shape[1]-1))
             b_gradient=0
             
-            for i in range(k): # Calculating gradients for point in our K sized dataset
+            for i in range(k): # Compute gradients for point in our batch size
                 prediction=np.dot(w,x[i])+b
                 w_gradient=w_gradient+(a)*x[i]*(y[i]-(prediction))
                 b_gradient=b_gradient+(c)*(y[i]-(prediction))
             
-            #Updating the weights(W) and Bias(b) with the above calculated Gradients
+            #get weight and bias
             w=w-learning_rate*(w_gradient/k)
             b=b-learning_rate*(b_gradient/k)
             
-            # Incrementing the iteration value
             cur_iter=cur_iter+1
             
-            #Dividing the learning rate by the specified value
+            #update learning rate
             learning_rate=learning_rate/divideby
 
 
@@ -97,12 +96,12 @@ class model():
         return bi
 
 
-def split_and_shuffle_labels(y_data, seed, amount):
+def sort_data_in_virtual_nodes(y_data, 0, amount):
     y_data=pd.DataFrame(y_data,columns=["labels"])
     y_data["i"]=np.arange(len(y_data))
     label_dict = dict()
     for i in range(3):
-        var_name="label" + str(i)
+        temp_name="label" + str(i)
         label_info=y_data
         #print("labels")
         #print(label_info)
@@ -111,31 +110,31 @@ def split_and_shuffle_labels(y_data, seed, amount):
         label_info=label_info[0:amount]
         label_info=pd.DataFrame(label_info, columns=["labels","i"])
         #print(label_info)
-        label_dict.update({var_name: label_info})
+        label_dict.update({temp_name: label_info})
         print("updating label dic")
         #print(label_dict)
     return label_dict
 
 
-def get_iid_subsamples_indices(label_dict, number_of_samples, amount):
+def get_virtual_nodes_data(label_dict, number_of_samples, amount):
     sample_dict= dict()
     batch_size=int(math.floor(amount/number_of_samples))
     for i in range(number_of_samples):
         sample_name="sample"+str(i)
-        dumb=pd.DataFrame()
+        temp=pd.DataFrame()
         for j in range(3):
             label_name=str("label")+str(j)
             a=label_dict[label_name][i*batch_size:(i+1)*batch_size]
             #print(a)
-            dumb=pd.concat([dumb,a], axis=0)
-        dumb.reset_index(drop=True, inplace=True)    
-        sample_dict.update({sample_name: dumb})
+            temp=pd.concat([temp,a], axis=0)
+        temp.reset_index(drop=True, inplace=True)    
+        sample_dict.update({sample_name: temp})
         print("updating sample dict")
         #print(sample_dict) 
     return sample_dict
 
 
-def create_iid_subsamples(sample_dict, x_data, y_data, x_name, y_name):
+def create_virtualnodes_subsamples(sample_dict, x_data, y_data, x_name, y_name):
     x_data_dict= dict()
     y_data_dict= dict()
     
@@ -144,10 +143,10 @@ def create_iid_subsamples(sample_dict, x_data, y_data, x_name, y_name):
         yname= y_name+str(i)
         sample_name="sample"+str(i)
         
-        indices=np.sort(np.array(sample_dict[sample_name]["i"]))
+        my_nodes=np.sort(np.array(sample_dict[sample_name]["i"]))
         
-        x_info= x_data[indices,:]
-        x_data_dict.update({xname : x_info})
+        xdatainfo= x_data[mynodes,:]
+        x_data_dict.update({xname : xdatainfo})
         
         y_info= y_data[indices]
         y_data_dict.update({yname : y_info})
