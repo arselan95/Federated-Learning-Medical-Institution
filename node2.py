@@ -175,32 +175,6 @@ print(y_train.shape)
 print(x_test.shape)
 print(y_test.shape)
 
-'''
-#CENTRALIZED TRAINING JUST FOR DEMO, TRAINING BY LOOKING AT DATA, DATA: CA
-print("centralized")
-print(train_data.shape)
-default=600
-n=0
-for itr in range(25):
-    itr=itr+1
-    #n=n+2
-    localmodel=model()
-    w,b=localmodel.SGDModel(train_data, 0.001,itr*default,1000,1,x_test,-2,-2)
-   # print(w.shape,b.shape,x1_train_.shape)
-    y1_pred_train=localmodel.predict(x_test,w,b)
-    print((mean_squared_error(y_test,y1_pred_train))/10)
-print("predict")
-print(y_test)
-print(len(y_test))
-print(y1_pred_train)
-print(len(y1_pred_train))
-
-plt.figure(figsize=(25,6))
-plt.plot(y_test, label='Actual')
-plt.plot(y1_pred_train, label='Predicted')
-plt.legend(prop={'size': 16})
-#plt.show()
-'''
 
 #global model database for admin
 conn=None
