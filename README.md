@@ -33,4 +33,14 @@
  <li> total icu beds used</li><br>
   <li> Based on data predict beds required in future</li><br>
  </ul> 
+ 
+ <h3>Elevator Pitch Video</h3><br>
+ <ul>
+ <li>https://www.youtube.com/watch?v=fWJgSDrzzDI</li><br>
+</ul>
+
+<h3>Project Video</h3><br>
+ <ul>
+ <li>https://www.youtube.com/watch?v=3rbNqnNtqEs</li><br>
+</ul>
 
