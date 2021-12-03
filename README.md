@@ -1,5 +1,30 @@
 # Federated-Learning-Medical-Institution
 
+ <h3>Elevator Pitch Video</h3><br>
+ <ul>
+ <li>https://www.youtube.com/watch?v=fWJgSDrzzDI</li><br>
+</ul>
+
+<h3>Project Video</h3><br>
+ <ul>
+ <li>https://www.youtube.com/watch?v=3rbNqnNtqEs</li><br>
+</ul>
+
+<h3>Presentations</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/presentations</li><br>
+</ul>
+
+<h3>Datasets</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/viewdata</li><br>
+</ul>
+
+<h3>System Requirements</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/sys-requirements</li><br>
+</ul>
+
 <h1>Nodes</h1><br>
 <h3>Node 2</h3><br>
  <ul>
@@ -34,13 +59,5 @@
   <li> Based on data predict beds required in future</li><br>
  </ul> 
  
- <h3>Elevator Pitch Video</h3><br>
- <ul>
- <li>https://www.youtube.com/watch?v=fWJgSDrzzDI</li><br>
-</ul>
 
-<h3>Project Video</h3><br>
- <ul>
- <li>https://www.youtube.com/watch?v=3rbNqnNtqEs</li><br>
-</ul>
 
