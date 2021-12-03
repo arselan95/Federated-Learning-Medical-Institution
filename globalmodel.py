@@ -40,7 +40,7 @@ class model():
         params.append(divideby)
         return params
     def SGDModel(data,X, learning_rate,n_iter,k,divideby,tlosshelper,a,c):    
-        # Initially we will keep our W and B as 0 as per the Training Data
+        # Initialize Weight and Bias
         model().losshelper=tlosshelper
         w=np.zeros(shape=(1,X.shape[1]-1))
         b=0
@@ -54,11 +54,11 @@ class model():
             y=np.array(temp['predictions'])
             x=np.array(temp.drop('predictions',axis=1))
             
-            # We keep our initial gradients as 0
+            # Initialized to 0
             w_gradient=np.zeros(shape=(1,X.shape[1]-1))
             b_gradient=0
             
-            for i in range(k): # Compute gradients for point in our batch size
+            for i in range(k): # Compute parameters for one case in our batch size
                 prediction=np.dot(w,x[i])+b
                 w_gradient=w_gradient+(a)*x[i]*(y[i]-(prediction))
                 b_gradient=b_gradient+(c)*(y[i]-(prediction))
@@ -155,16 +155,16 @@ def create_virtualnodes_subsamples(sample_dict, x_data, y_data, x_name, y_name):
 
 
 #train_amount=150
-train_amount=180
-number_of_samples=3
-test_amount=25
-print_amount=2
+train=180
+number=3
+test=25
+print_=2
 
 j=[]
-def create_model_optimizer_criterion_dict(number_of_samples):
+def create_model_optimizer_loss_dict(number_of_samples):
     model_dict = dict()
     optimizer_dict= dict()
-    criterion_dict = dict()
+    loss_dict = dict()
     
     for i in range(number_of_samples):
         model_name="model"+str(i)
@@ -175,27 +175,27 @@ def create_model_optimizer_criterion_dict(number_of_samples):
         optimizer_info = model_info.modelparameters(0.0001,i*400,40,1)
         optimizer_dict.update({optimizer_name : optimizer_info })
         
-        criterion_name = "criterion"+str(i)
-        criterion_info = model_info.getloss()
-        criterion_dict.update({criterion_name : criterion_info})
+        loss_name = "loss"+str(i)
+        loss_info = model_info.getloss()
+        loss_dict.update({loss_name : loss_info})
         
-    return model_dict, optimizer_dict, criterion_dict 
+    return model_dict, optimizer_dict, loss_dict 
 
 
-model_dict, optimizer_dict, criterion_dict=create_model_optimizer_criterion_dict(3)
+model_dict, optimizer_dict, loss_dict=create_model_optimizer_loss_dict(3)
 
 '''
 print("model")
 print(model_dict)
 print("opti")
 print(optimizer_dict)
-print("crite")
-print(criterion_dict)
+print("loss")
+print(loss_dict)
 
 name_of_models=list(model_dict.keys())
 name_of_optimizers=list(optimizer_dict.keys())
-name_of_criterions=list(criterion_dict.keys())
-def send_main_model_to_nodes_and_update_model_dict(main_model, model_dict, number_of_samples):
+name_of_loss=list(loss_dict.keys())
+def send_model_to_nodes(main_model, model_dict, number_of_samples):
     for i in range(number_of_samples):
 
         model_dict[name_of_models[i]].weights=main_model.getweight([])
@@ -204,6 +204,6 @@ def send_main_model_to_nodes_and_update_model_dict(main_model, model_dict, numbe
     return model_dict
 
 main_model=model()
-model_dict=send_main_model_to_nodes_and_update_model_dict(main_model, model_dict, number_of_samples)
+model_dict=send_model_to_nodes(main_model, model_dict, number)
 print(model_dict)
 '''
