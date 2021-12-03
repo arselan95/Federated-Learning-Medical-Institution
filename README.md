@@ -34,9 +34,3 @@
   <li> Based on data predict beds required in future</li><br>
  </ul> 
 
-<h1>Run Nodes</h1><br>
- <ul>
- <li> node{NODE_NUMMBER}.py , globalmodel.py , updatedbayareanode{NODE_NUMMBER}.pickle in same folder or however you want to link</li><br>
- <li> Run python3 node{NODE_NUMMBER}.py </li><br>
- <li> Output png graph file will be generated and saved as node{NODE_NUMMBER}predictions.png </li><br>
-</ul>
