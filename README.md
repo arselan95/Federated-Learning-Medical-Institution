@@ -25,6 +25,16 @@
  <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/sys-requirements</li><br>
 </ul>
 
+<h3>System Databases</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/msqldb</li><br>
+</ul>
+
+<h3>System Database Architecture</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/blob/main/viewdata/databaseplan.txt</li><br>
+</ul>
+
 <h3>Logs</h3><br>
  <ul>
  <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/commits/main</li><br>
