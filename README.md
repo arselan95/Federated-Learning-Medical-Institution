@@ -25,6 +25,11 @@
  <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/tree/main/sys-requirements</li><br>
 </ul>
 
+<h3>Logs</h3><br>
+ <ul>
+ <li>https://github.com/arselan95/Federated-Learning-Medical-Institution/commits/main</li><br>
+</ul>
+
 <h1>Nodes</h1><br>
 <h3>Node 2</h3><br>
  <ul>
